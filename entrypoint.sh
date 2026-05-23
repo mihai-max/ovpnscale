@@ -75,8 +75,8 @@ load_config() {
         while IFS='=' read -r k v; do
             case "$k" in
                 HEADSCALE_URL)  HEADSCALE_URL="$v" ;;
-                TS_AUTHKEY)     [ -n "$v" ] && TS_AUTHKEY="$v" ;;
-                TS_HOSTNAME)    [ -n "$v" ] && TS_HOSTNAME="$v" ;;
+                TS_AUTHKEY)     if [ -n "$v" ]; then TS_AUTHKEY="$v"; fi ;;
+                TS_HOSTNAME)    if [ -n "$v" ]; then TS_HOSTNAME="$v"; fi ;;
                 TS_EXTRA_ARGS)  TS_EXTRA_ARGS="$v" ;;
                 OVPN_AUTH_USER) OVPN_AUTH_USER="$v" ;;
                 OVPN_AUTH_PASS) OVPN_AUTH_PASS="$v" ;;
@@ -84,7 +84,10 @@ load_config() {
             esac
         done < "$DATA_DIR/config.env"
     fi
-    [ -f "$DATA_DIR/client.ovpn" ] && OVPN_CONFIG="$DATA_DIR/client.ovpn"
+    if [ -f "$DATA_DIR/client.ovpn" ]; then
+        OVPN_CONFIG="$DATA_DIR/client.ovpn"
+    fi
+    return 0   # never let `set -e` kill the script when called standalone
 }
 
 config_ready() {

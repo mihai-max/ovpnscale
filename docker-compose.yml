@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     env_file: .env
     ports:
-      - "8080:8080"                  # first-run setup web UI (protect it! see .env)
+      - "9362:8080"                  # first-run setup web UI on host :9362 (protect it! see .env)
     cap_add:
       - NET_ADMIN
     devices:
