@@ -1,0 +1,2 @@
+# Put your OpenVPN profile here as client.ovpn (this folder is mounted to /config).
+# Real .ovpn/credentials files are git-ignored on purpose.

@@ -1,0 +1,29 @@
+services:
+  ovpn-exit:
+    build: .
+    image: ovpnscale
+    container_name: ovpn-exit
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8080:8080"                  # first-run setup web UI (protect it! see .env)
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv6.conf.all.forwarding=1
+    volumes:
+      - ovpn-data:/data              # uploaded .ovpn + settings (saved by the web UI)
+      - ts-data:/var/lib/tailscale
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/healthcheck.sh"]
+      interval: 60s
+      timeout: 10s
+      start_period: 30s
+      retries: 3
+
+volumes:
+  ovpn-data:
+  ts-data:

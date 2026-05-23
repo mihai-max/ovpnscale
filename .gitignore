@@ -1,0 +1,12 @@
+# Secrets / local config — never commit
+.env
+
+# Your provider's VPN profile + credentials live in ./config — never commit them
+config/*
+!config/.gitkeep
+
+# Runtime state (also lives in Docker named volumes)
+*.state
+
+# OS noise
+.DS_Store
